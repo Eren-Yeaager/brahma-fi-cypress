@@ -44,6 +44,37 @@ const postToArbitrum = (url) => {
   });
 };
 
+const refreshToken = () => {
+  cy.request({
+    method: "POST",
+    url: "https://gtw.brahma.fi/v1/auth/refresh",
+    body: {
+      grant_type: "refresh_token",
+      refresh_token: config.refreshToken,
+    },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  }).then((response) => {
+    const newAccessToken = response.body.access_token;
+    const newExpiresAt = Date.now() + response.body.expires_in * 1000;
+    const newRefreshToken = response.body.refresh_token;
+
+    cy.window().then((win) => {
+      win.localStorage.setItem(
+        "brah_acc_auth-0xc7aD8a29EdA1844C6Eab6102F421EDe9159b5AA4",
+        JSON.stringify({
+          accessToken: newAccessToken,
+          expiresAt: newExpiresAt,
+          redirect: false,
+          refreshToken: newRefreshToken,
+        })
+      );
+      cy.log("Token refreshed and set to local storage");
+    });
+  });
+};
+
 describe("Navigate to Dashboard", () => {
   it("Connects wallet and signs a message and navigates to the dashboard", () => {
     // Load the Brahma console
