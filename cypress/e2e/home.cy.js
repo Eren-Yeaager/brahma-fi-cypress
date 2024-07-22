@@ -114,6 +114,17 @@ describe("Navigate to Dashboard", () => {
         })
       );
       cy.log("LocalStorage item set");
+      win.sessionStorage.setItem(
+        "sentryReplaySession",
+        JSON.stringify({
+          id: "465bfcb9d5984560a68e24b0bf33bfae",
+          started: 1721655995969,
+          lastActivity: 1721656000672,
+          segmentId: 0,
+          sampled: "buffer",
+        })
+      );
+      cy.log("SessionStorage item set");
     });
     cy.wait(5000);
     cy.contains("UI-Testing").click({ force: true });
