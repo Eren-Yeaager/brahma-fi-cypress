@@ -77,7 +77,7 @@ describe("Navigate to Dashboard", () => {
         "brah_acc_auth-0xc7aD8a29EdA1844C6Eab6102F421EDe9159b5AA4",
         JSON.stringify({
           accessToken: config.accessToken,
-          expiresAt: 1721558635,
+          expiresAt: Date.now() + 604800000,
           redirect: false,
           refreshToken: config.refreshToken,
         })
@@ -89,6 +89,6 @@ describe("Navigate to Dashboard", () => {
     cy.wait(5000);
     cy.get("[type=TITLE_XL]").should("be.visible");
     cy.get("[type=TITLE_XL]").should("contain.text", "$0.00");
-    cy.screenshot('assertion-screenshot');
+    cy.screenshot("assertion-screenshot");
   });
 });
